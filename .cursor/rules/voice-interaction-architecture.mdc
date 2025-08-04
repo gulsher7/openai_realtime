@@ -1,0 +1,43 @@
+---
+description: Voice interaction system architecture and real-time communication patterns
+---
+
+# Voice Interaction Architecture
+
+## Real-Time Communication Flow
+The application uses WebSocket-based communication through [utils/useRealTime.ts](mdc:utils/useRealTime.ts) with the following pattern:
+
+1. **Audio Input**: User speaks → Audio recorded via `useAudioRecorder()` → Base64 encoded → Sent via WebSocket
+2. **AI Processing**: Backend receives audio → Processes with AI service → Streams response back
+3. **Audio Output**: Receive audio deltas → Buffer management → Playback via AudioContext
+
+## Key Message Types (from [utils/types.ts](mdc:utils/types.ts))
+- `InputAudioBufferAppendCommand`: Send user audio to AI
+- `ResponseAudioDelta`: Receive AI audio response chunks
+- `ResponseDone`: AI response complete
+- `TurnComplete`: Conversation turn finished
+- `ResponseInputAudioTranscriptionCompleted`: User speech transcription
+
+## WebSocket Connection Management
+- Auto-reconnection handling for production environments
+- Proper cleanup on component unmount
+- Error handling with fallback strategies
+- Connection state management for UI feedback
+
+## Audio Processing Pipeline
+1. **Recording**: 16kHz sample rate, real-time streaming
+2. **Transmission**: Base64 encoding for WebSocket compatibility
+3. **Reception**: Streaming audio deltas from AI service
+4. **Playback**: Buffer management with AudioContext for smooth playback
+
+## Integration Points
+- Use `useRealTime` hook for all AI communication
+- Implement proper audio permission handling before starting
+- Handle interruptions and turn management
+- Manage audio state synchronization between recording and playback
+
+When implementing voice features:
+- Always check audio permissions first
+- Implement proper loading states during AI processing
+- Handle network interruptions gracefully
+- Provide clear user feedback for all voice interaction states

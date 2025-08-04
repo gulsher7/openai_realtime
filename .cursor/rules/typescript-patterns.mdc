@@ -1,0 +1,35 @@
+---
+globs: *.ts,*.tsx
+---
+
+# TypeScript & React Native Patterns
+
+## Type Safety Guidelines
+- Always use strict TypeScript with proper type definitions from [utils/types.ts](mdc:utils/types.ts)
+- Define interfaces for all audio-related data structures and WebSocket messages
+- Use React.JSX.Element as return type for functional components
+- Implement proper error handling with typed catch blocks
+
+## Audio-Specific Patterns
+- Use `AudioBuffer | null` for audio buffer state management
+- Base64 string types for audio data transmission
+- Proper ref typing for audio context objects:
+  ```typescript
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const audioBufferSourceRef = useRef<AudioBufferSourceNode | null>(null);
+  ```
+
+## State Management Patterns
+- Use useState with proper initial values for audio states
+- Implement useRef for audio processing objects that shouldn't trigger re-renders
+- Use useEffect for WebSocket lifecycle management and cleanup
+
+## Error Handling
+- Always implement proper error boundaries for audio operations
+- Handle permission denials gracefully with user feedback
+- Implement fallback strategies for audio API failures
+
+## Performance Considerations
+- Use useCallback for audio event handlers to prevent unnecessary re-renders
+- Implement proper cleanup in useEffect hooks for audio resources
+- Use refs for values that change frequently but don't need to trigger renders

@@ -1,0 +1,32 @@
+---
+alwaysApply: true
+---
+
+# Voice AI Interaction Project Structure
+
+This is a React Native/Expo voice AI interaction application with real-time audio streaming capabilities.
+
+## Key Entry Points
+- Main app: [app/index.tsx](mdc:app/index.tsx) - The primary voice interaction screen with audio recording/playback
+- Real-time communication: [utils/useRealTime.ts](mdc:utils/useRealTime.ts) - WebSocket-based AI communication hook
+- Type definitions: [utils/types.ts](mdc:utils/types.ts) - Core message and audio types
+- Backend server: [backend/server.js](mdc:backend/server.js) - WebSocket server for AI communication
+
+## Architecture Overview
+- **Frontend**: React Native with Expo, implements voice recording, audio playback, and real-time AI interaction
+- **Audio Stack**: Uses `@siteed/expo-audio-studio` for recording and `react-native-audio-api` for playback
+- **Communication**: WebSocket-based real-time communication with AI services (OpenAI/Azure)
+- **Audio Format**: 16kHz sample rate, Base64 encoded for transmission
+
+## Core Functionality
+- Real-time voice recording with permission handling
+- Streaming audio to AI service via WebSocket
+- Real-time audio response playback
+- Audio transcription capabilities
+- Turn-based conversation management
+
+When working on this project, always consider:
+- Audio permissions and platform-specific implementations
+- Real-time performance and buffer management
+- WebSocket connection stability and error handling
+- Audio format compatibility across platforms

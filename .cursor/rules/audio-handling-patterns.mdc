@@ -1,0 +1,60 @@
+---
+description: Audio recording, processing, and playback patterns for the voice AI system
+---
+
+# Audio Handling Patterns
+
+## Audio Recording Setup
+Use the established pattern from [app/index.tsx](mdc:app/index.tsx):
+
+```typescript
+const { startRecording, stopRecording, isRecording } = useAudioRecorder();
+const SAMPLE_RATE = 16000; // Standard rate for AI services
+```
+
+## Permission Handling
+Always implement comprehensive permission checking:
+- Android: Request RECORD_AUDIO permission via PermissionsAndroid
+- iOS: Handle permission requests through expo-audio-studio
+- Provide clear user feedback when permissions are denied
+- Implement graceful fallbacks for permission failures
+
+## Audio Context Management
+Maintain proper AudioContext lifecycle:
+```typescript
+const audioContextRef = useRef<AudioContext | null>(null);
+const audioBufferSourceRef = useRef<AudioBufferSourceNode | null>(null);
+const gainNodeRef = useRef<GainNode | null>(null);
+```
+
+## Audio Buffer Queue Management
+Implement streaming audio playback with buffer queuing:
+- Use `audioQueueRef` for managing incoming audio chunks
+- Implement proper buffer scheduling to avoid gaps
+- Handle buffer underruns gracefully
+- Clean up completed buffers to prevent memory leaks
+
+## Audio Data Format
+- **Input**: Raw audio from microphone → Base64 encoded for WebSocket transmission
+- **Output**: Base64 audio deltas from AI → Decoded to ArrayBuffer → AudioBuffer for playback
+- **Sample Rate**: Consistent 16kHz across recording and playback
+- **Encoding**: PCM format for processing, Base64 for transmission
+
+## Error Handling Patterns
+- Wrap all audio operations in try-catch blocks
+- Handle AudioContext creation failures
+- Implement fallbacks for unsupported audio formats
+- Provide user feedback for audio-related errors
+- Clean up resources properly on errors
+
+## Performance Optimization
+- Use refs for frequently updated audio state to avoid re-renders
+- Implement proper cleanup in useEffect hooks
+- Avoid creating new AudioContext instances unnecessarily
+- Use AudioWorklet for advanced audio processing when needed
+
+## Platform Considerations
+- iOS: Handle background audio capabilities
+- Android: Manage audio focus and interruptions
+- Web: Handle autoplay policies and user gesture requirements
+- Implement platform-specific optimizations for latency
