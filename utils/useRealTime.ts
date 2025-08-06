@@ -44,7 +44,7 @@ export default function useRealTime({
 
 
   const connect = () => {
-    const wsUrl = `ws://0.tcp.in.ngrok.io:11507`;
+    const wsUrl = `ws://0.tcp.in.ngrok.io:11636`;
     console.log("Connecting to WebSocket:", wsUrl);
 
     ws.current = new WebSocket(wsUrl);

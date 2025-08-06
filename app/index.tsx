@@ -1,3 +1,4 @@
+import { playPCM } from '@/utils/hooks/playPCM';
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { AudioContext, AudioManager } from 'react-native-audio-api';
@@ -24,16 +25,8 @@ export default function VoiceInteractionScreen(): React.JSX.Element {
       console.log('🎯 Session ready for audio');
     },
     onReceivedAudioChunk: async (message) => {
-
-      if (audioContextRef.current) {
-        console.log('🔊 Received audio chunk', message?.audio);
-        const audioBuffer = await audioContextRef.current.decodeAudioData(message?.audio);
-        if (audioBuffer) {
-          console.log('🔊 Audio chunk processed');
-          // Always play AI responses, even during recording
-          addToQueue(audioBuffer);
-          console.log('✅ Audio chunk queued for playback');
-        }
+        if (message?.audio) {
+          playPCM(message?.audio);
       }
     },
     onReceivedError: (message) => {
